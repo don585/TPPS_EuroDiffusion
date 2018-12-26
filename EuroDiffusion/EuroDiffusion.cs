@@ -8,6 +8,8 @@ namespace EuroDiffusion
 {
     class EuroDiffusion
     {
+        const string NUMBER_OF_COUNTRIES_ERROR = "Number of countries should be not more that max value.";
+        const string COUNTRIES_SHOULD_BE_CONNECTED_ERROR = "The countries should be connected.";
         const int MAX_NUMBER_OF_DAYS = 20000;
         const int MAX_NUMBER_OF_COUNTRIES = 20;
         const int MAX_X = 10;
@@ -26,10 +28,10 @@ namespace EuroDiffusion
             SetMatrixOfEUCountries();
         }
 
-        private void CheckInputData()
+        private void CheckInputData() 
         {
             if (numberOfCountries > MAX_NUMBER_OF_COUNTRIES)
-                Console.WriteLine("Number of counries should be less than " + MAX_NUMBER_OF_COUNTRIES);
+                throw new Exception(NUMBER_OF_COUNTRIES_ERROR);
         }
 
         private void FillMatrixOfEUCountries()
@@ -60,7 +62,7 @@ namespace EuroDiffusion
                     countries[i].NextDay();
                 }
                 if (day > MAX_NUMBER_OF_DAYS)
-                    Console.WriteLine("Countries should be connected");
+                    throw new Exception(COUNTRIES_SHOULD_BE_CONNECTED_ERROR);
             }
         }
 
@@ -94,7 +96,7 @@ namespace EuroDiffusion
 
         public String GetResults()
         {
-            var sortedCountries = countries.OrderBy(c => c.numberOfDays).ToList();
+            var sortedCountries = countries.OrderBy(c => c.numberOfDays).OrderBy(c => c.countryName).ToList();
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < numberOfCountries; i++)
             {

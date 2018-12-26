@@ -8,6 +8,9 @@ namespace EuroDiffusion
 {
     class CoinDistribution
     {
+        const string NAME_LENGTH_ERROR = "Name should contains not more than 25 characters.";
+        const string COORDINATES_SHOULD_BE_POSITIVE = "Coordinates should be positive.";
+        const string COORDINATES_SHOULD_BE_LESS_THAN_MAX = "Coordinates should be less than max value.";
         const int LENGTH_NAME = 25;
         const int MAX_Y = 10, MAX_X = 10;
         const int MIN_X = 0, MIN_Y = 0;
@@ -31,18 +34,22 @@ namespace EuroDiffusion
             this.yl = yl - 1;
             this.xh = xh - 1;
             this.yh = yh - 1;
-            CheckInputData();
+            if (!CheckInputData())
+                return;
             currentMatrix = InitMatrix();
         }
 
-        private void CheckInputData()
+        private bool CheckInputData()
         {
             if (countryName.Length > LENGTH_NAME)
-                Console.WriteLine("Length of country name should be less than 25");
+                throw new Exception(NAME_LENGTH_ERROR);
             if (xl < MIN_X || yl < MIN_Y || xh < MIN_X || yh < MIN_Y)
-                Console.WriteLine("Coordinates should be positive");
+            {
+                throw new Exception(COORDINATES_SHOULD_BE_POSITIVE);
+            }
             if (xl >= MAX_X || yl >= MAX_Y || xh >= MAX_X || yh >= MAX_Y)
-                Console.WriteLine("Coordinates should be less than 10");
+                throw new Exception(COORDINATES_SHOULD_BE_LESS_THAN_MAX);
+            return true;
         }
 
         public void NextDay()
